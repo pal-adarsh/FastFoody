@@ -30,7 +30,8 @@
 ---
 
 ## 📸 Screenshots
-![image](![image](https://github.com/user-attachments/assets/5263cf12-cb69-4c6d-bf00-09beee3d9624))
+![image](https://github.com/user-attachments/assets/f3d69c59-270a-4f25-9eae-cf83d758c64c)
+
 
 ---
 
