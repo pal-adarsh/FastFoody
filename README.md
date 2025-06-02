@@ -66,8 +66,7 @@ By building this project, you’ll strengthen your understanding of:
 
 ## 🙋‍♂️ Author
 
-Created by **Adarsh Pal**  
-Connect on [LinkedIn](#) or [GitHub](#)
+Created by **Adarsh Pal** 
 
 ---
 
