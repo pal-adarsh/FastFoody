@@ -29,6 +29,10 @@
 
 ---
 
+## 📸 Screenshots
+![image](![image](https://github.com/user-attachments/assets/5263cf12-cb69-4c6d-bf00-09beee3d9624))
+
+---
 
 > Note: Both versions use the same design language and sections. You can explore either version depending on the framework preference.
 
