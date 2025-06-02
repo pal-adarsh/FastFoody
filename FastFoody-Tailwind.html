@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastFoody - Delicious Food Delivered Fast</title>
+  <meta name="description" content="Order delicious food online with FastFoody. We offer pizza, burgers, noodles and more with fast delivery.">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FF6B35',
+            secondary: '#EFEFD0',
+            accent: '#FFD166',
+            dark: '#1E1E1E',
+            light: '#F7F7F7',
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            display: ['"Fredoka One"', 'cursive'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 6s ease-in-out infinite',
+            'fade-in': 'fadeIn 0.5s ease-in',
+            'slide-up': 'slideUp 0.5s ease-out',
+            'shake': 'shake 0.5s ease-in-out',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+            shake: {
+              '0%, 100%': { transform: 'translateX(0)' },
+              '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
+              '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Framer Motion -->
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+  
+  <style>
+    .btn-primary {
+      background-color: #FF6B35;
+      color: white;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition-property: all;
+      transition-duration: 300ms;
+      transform: scale(1);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .btn-primary:hover {
+      background-color: rgba(255, 107, 53, 0.9);
+      transform: scale(1.05);
+    }
+    
+    .btn-secondary {
+      background-color: white;
+      color: #FF6B35;
+      border-width: 2px;
+      border-color: #FF6B35;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition-property: all;
+      transition-duration: 300ms;
+      transform: scale(1);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .btn-secondary:hover {
+      background-color: #FF6B35;
+      color: white;
+      transform: scale(1.05);
+    }
+    
+    .nav-link {
+      position: relative;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #FF6B35;
+      transition-property: all;
+      transition-duration: 300ms;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .section-title {
+      font-size: 1.875rem;
+      font-family: 'Fredoka One', cursive;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    @media (min-width: 768px) {
+      .section-title {
+        font-size: 2.25rem;
+      }
+    }
+    
+    .section-subtitle {
+      font-size: 1.125rem;
+      color: #4b5563;
+      max-width: 42rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .feature-card {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      text-align: center;
+      transition-property: box-shadow;
+      transition-duration: 300ms;
+    }
+    
+    .feature-card:hover {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .feature-icon {
+      height: 4rem;
+      width: 4rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-text {
+      color: #4b5563;
+    }
+    
+    /* Continue with the rest of the styles... */
+    .testimonial-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 0.75rem;
+      backdrop-filter: blur(4px);
+    }
+    
+    .testimonial-rating {
+      color: #FFD166;
+      margin-bottom: 1rem;
+    }
+    
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+    }
+    
+    .testimonial-avatar {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 9999px;
+      object-fit: cover;
+      margin-right: 1rem;
+    }
+    
+    .testimonial-name {
+      font-weight: 700;
+    }
+    
+    .testimonial-location {
+      font-size: 0.875rem;
+      color: #d1d5db;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-radius: 0.5rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      outline: none;
+      color: white;
+    }
+    
+    .form-input:focus {
+      box-shadow: 0 0 0 2px white;
+      border-color: transparent;
+    }
+    
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    /* Continue with more styles as needed... */
+    .contact-icon {
+      background-color: rgba(255, 255, 255, 0.1);
+      height: 2.5rem;
+      width: 2.5rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      margin-top: 0.25rem;
+    }
+    
+    .contact-info-title {
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .contact-info-text {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .social-icon {
+      background-color: rgba(255, 255, 255, 0.1);
+      height: 2.5rem;
+      width: 2.5rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition-property: background-color;
+      transition-duration: 300ms;
+    }
+    
+    .social-icon:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .menu-card {
+      background-color: white;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition-property: all;
+      transition-duration: 300ms;
+      transform: translateY(0);
+    }
+    
+    .menu-card:hover {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      transform: translateY(-0.5rem);
+    }
+    
+    .menu-card-img {
+      width: 100%;
+      height: 12rem;
+      object-fit: cover;
+    }
+    
+    .menu-card-body {
+      padding: 1.5rem;
+    }
+    
+    .menu-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .menu-card-price {
+      color: #FF6B35;
+      font-weight: 700;
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+    }
+    
+    .menu-card-desc {
+      color: #4b5563;
+      margin-bottom: 1rem;
+    }
+    
+    .menu-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .quantity-btn {
+      background-color: #e5e7eb;
+      color: #1f2937;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      transition-property: background-color;
+      transition-duration: 300ms;
+    }
+    
+    .quantity-btn:hover {
+      background-color: #d1d5db;
+    }
+    
+    .quantity-input {
+      width: 2.5rem;
+      text-align: center;
+      border: 0;
+      outline: none;
+    }
+    
+    .add-to-cart-btn {
+      background-color: #FF6B35;
+      color: white;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-radius: 0.5rem;
+      transition-property: background-color;
+      transition-duration: 300ms;
+    }
+    
+    .add-to-cart-btn:hover {
+      background-color: rgba(255, 107, 53, 0.9);
+    }
+    
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .cart-item-img {
+      height: 4rem;
+      width: 4rem;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      margin-right: 1rem;
+    }
+    
+    .cart-item-details {
+      flex-grow: 1;
+    }
+    
+    .cart-item-title {
+      font-weight: 700;
+    }
+    
+    .cart-item-price {
+      color: #4b5563;
+      font-size: 0.875rem;
+    }
+    
+    .cart-item-remove {
+      color: #9ca3af;
+      transition-property: color;
+      transition-duration: 300ms;
+    }
+    
+    .cart-item-remove:hover {
+      color: #FF6B35;
+    }
+    
+    .special-offer-card {
+      background-image: linear-gradient(to right, #FF6B35, #FFD166);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .offer-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: white;
+      color: #FF6B35;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    
+    .food-category {
+      display: inline-block;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-radius: 9999px;
+      background-color: rgba(255, 107, 53, 0.1);
+      color: #FF6B35;
+      font-weight: 500;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      transition-property: background-color, color;
+      transition-duration: 300ms;
+      cursor: pointer;
+    }
+    
+    .food-category:hover {
+      background-color: #FF6B35;
+      color: white;
+    }
+    
+    .food-category.active {
+      background-color: #FF6B35;
+      color: white;
+    }
+    
+    .food-item {
+      transition-property: all;
+      transition-duration: 500ms;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .food-item.hidden {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+    }
+    
+    .food-item.visible {
+      opacity: 1;
+      height: auto;
+    }
+</style>
+</head>
+<body class="font-sans bg-light text-dark">
+  <!-- Navigation -->
+  <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <a href="#" class="text-3xl font-display text-primary font-bold hover:text-accent transition-colors">FastFoody</a>
+      </div>
+      
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#home" class="nav-link hover:text-primary transition-colors">Home</a>
+        <a href="#menu" class="nav-link hover:text-primary transition-colors">Menu</a>
+        <a href="#special-offers" class="nav-link hover:text-primary transition-colors">Offers</a>
+        <a href="#about" class="nav-link hover:text-primary transition-colors">About</a>
+        <a href="#testimonials" class="nav-link hover:text-primary transition-colors">Reviews</a>
+        <a href="#contact" class="nav-link hover:text-primary transition-colors">Contact</a>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <button id="cart-button" class="relative group transform hover:scale-110 transition-transform">
+          <i class="fas fa-shopping-cart text-2xl text-primary group-hover:text-accent transition-colors"></i>
+          <span id="cart-count" class="cart-count absolute -top-2 -right-2 bg-accent text-dark text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        </button>
+        
+        <button id="mobile-menu-button" class="md:hidden text-2xl text-primary hover:text-accent transition-colors">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white py-4 px-6 shadow-lg">
+      <div class="flex flex-col space-y-4">
+        <a href="#home" class="nav-link hover:text-primary transition-colors">Home</a>
+        <a href="#menu" class="nav-link hover:text-primary transition-colors">Menu</a>
+        <a href="#special-offers" class="nav-link hover:text-primary transition-colors">Offers</a>
+        <a href="#about" class="nav-link hover:text-primary transition-colors">About</a>
+        <a href="#testimonials" class="nav-link hover:text-primary transition-colors">Reviews</a>
+        <a href="#contact" class="nav-link hover:text-primary transition-colors">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-10 z-0"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-12 md:mb-0 animate-fade-in">
+          <h1 class="text-4xl md:text-6xl font-display font-bold mb-6 text-primary">
+            <span class="block">50% OFF</span>
+            <span class="block">All Items</span>
+          </h1>
+          <p class="text-lg md:text-xl mb-8 text-gray-700">
+            Enjoy delicious food crafted with love and delivered to your doorstep in minutes.
+          </p>
+          <div class="flex space-x-4">
+            <button class="btn-primary animate-pulse">Order Now</button>
+            <button class="btn-secondary">View Menu</button>
+          </div>
+        </div>
+        
+        <div class="md:w-1/2 relative">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Delicious Pizza" class="w-full max-w-lg mx-auto rounded-full border-8 border-white shadow-2xl transform rotate-0 hover:rotate-6 transition-transform duration-500">
+          <img src="./Spices/7.jpg" alt="Decoration" class="absolute -top-10 -left-10 h-24 w-auto animate-float">
+          <img src="./Spices/8.png" alt="Decoration" class="absolute -bottom-10 -right-10 h-24 w-auto animate-float">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="feature-card animate-slide-up" style="animation-delay: 0.1s">
+          <div class="feature-icon bg-primary/10 text-primary">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3 class="feature-title">Fast Delivery</h3>
+          <p class="feature-text">Get your food delivered in under 30 minutes or it's free!</p>
+        </div>
+        
+        <div class="feature-card animate-slide-up" style="animation-delay: 0.2s">
+          <div class="feature-icon bg-accent/10 text-accent">
+            <i class="fas fa-star"></i>
+          </div>
+          <h3 class="feature-title">Premium Quality</h3>
+          <p class="feature-text">We use only the freshest ingredients for maximum flavor.</p>
+        </div>
+        
+        <div class="feature-card animate-slide-up" style="animation-delay: 0.3s">
+          <div class="feature-icon bg-primary/10 text-primary">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <h3 class="feature-title">Affordable Prices</h3>
+          <p class="feature-text">Delicious meals that won't break your budget.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Special Offers Section -->
+  <section id="special-offers" class="py-16 bg-secondary">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="section-title">Today's Special Offers</h2>
+        <p class="section-subtitle">Limited time deals you don't want to miss</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="special-offer-card animate-fade-in">
+          <span class="offer-badge">HOT DEAL</span>
+          <h3 class="text-2xl font-bold mb-2">Family Feast</h3>
+          <p class="mb-4">Get 2 large pizzas, 1 pasta, and 4 drinks for just ₹999</p>
+          <button class="btn-secondary">Order Now</button>
+          <div class="absolute -bottom-10 -right-10 opacity-20">
+            <i class="fas fa-fire text-8xl"></i>
+          </div>
+        </div>
+        
+        <div class="special-offer-card animate-fade-in" style="animation-delay: 0.2s">
+          <span class="offer-badge">NEW</span>
+          <h3 class="text-2xl font-bold mb-2">Weekend Special</h3>
+          <p class="mb-4">Buy any burger meal and get a free dessert</p>
+          <button class="btn-secondary">Order Now</button>
+          <div class="absolute -bottom-10 -right-10 opacity-20">
+            <i class="fas fa-gift text-8xl"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Section -->
+  <section id="menu" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="section-title">Our Delicious Menu</h2>
+        <p class="section-subtitle">Choose from our wide selection of dishes</p>
+      </div>
+      
+      <div class="flex flex-wrap justify-center mb-12">
+        <div class="food-category active" data-category="all">All Items</div>
+        <div class="food-category" data-category="pizza">Pizza</div>
+        <div class="food-category" data-category="burger">Burgers</div>
+        <div class="food-category" data-category="pasta">Pasta</div>
+        <div class="food-category" data-category="salad">Salads</div>
+        <div class="food-category" data-category="dessert">Desserts</div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Pizza -->
+        <div class="food-item visible" data-categories="pizza">
+          <div class="menu-card">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Margherita Pizza" class="menu-card-img">
+            <div class="menu-card-body">
+              <h3 class="menu-card-title">Margherita Pizza</h3>
+              <p class="menu-card-price">₹299</p>
+              <p class="menu-card-desc">Classic pizza with tomato sauce, mozzarella, and fresh basil.</p>
+              <div class="menu-card-footer">
+                <div class="quantity-selector">
+                  <button class="quantity-btn minus">-</button>
+                  <input type="number" class="quantity-input" value="1" min="1">
+                  <button class="quantity-btn plus">+</button>
+                </div>
+                <button class="add-to-cart-btn" data-id="1" data-name="Margherita Pizza" data-price="299" data-image="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Burger -->
+        <div class="food-item visible" data-categories="burger">
+          <div class="menu-card">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Cheeseburger" class="menu-card-img">
+            <div class="menu-card-body">
+              <h3 class="menu-card-title">Classic Cheeseburger</h3>
+              <p class="menu-card-price">₹199</p>
+              <p class="menu-card-desc">Juicy beef patty with cheese, lettuce, tomato, and special sauce.</p>
+              <div class="menu-card-footer">
+                <div class="quantity-selector">
+                  <button class="quantity-btn minus">-</button>
+                  <input type="number" class="quantity-input" value="1" min="1">
+                  <button class="quantity-btn plus">+</button>
+                </div>
+                <button class="add-to-cart-btn" data-id="2" data-name="Classic Cheeseburger" data-price="199" data-image="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Pasta -->
+        <div class="food-item visible" data-categories="pasta">
+          <div class="menu-card">
+            <img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Pasta Carbonara" class="menu-card-img">
+            <div class="menu-card-body">
+              <h3 class="menu-card-title">Pasta Carbonara</h3>
+              <p class="menu-card-price">₹249</p>
+              <p class="menu-card-desc">Creamy pasta with pancetta, egg, and parmesan cheese.</p>
+              <div class="menu-card-footer">
+                <div class="quantity-selector">
+                  <button class="quantity-btn minus">-</button>
+                  <input type="number" class="quantity-input" value="1" min="1">
+                  <button class="quantity-btn plus">+</button>
+                </div>
+                <button class="add-to-cart-btn" data-id="3" data-name="Pasta Carbonara" data-price="249" data-image="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Salad -->
+        <div class="food-item visible" data-categories="salad">
+          <div class="menu-card">
+            <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Caesar Salad" class="menu-card-img">
+            <div class="menu-card-body">
+              <h3 class="menu-card-title">Caesar Salad</h3>
+              <p class="menu-card-price">₹179</p>
+              <p class="menu-card-desc">Fresh romaine lettuce with croutons, parmesan, and Caesar dressing.</p>
+              <div class="menu-card-footer">
+                <div class="quantity-selector">
+                  <button class="quantity-btn minus">-</button>
+                  <input type="number" class="quantity-input" value="1" min="1">
+                  <button class="quantity-btn plus">+</button>
+                </div>
+                <button class="add-to-cart-btn" data-id="4" data-name="Caesar Salad" data-price="179" data-image="https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Dessert -->
+        <div class="food-item visible" data-categories="dessert">
+          <div class="menu-card">
+            <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Chocolate Lava Cake" class="menu-card-img">
+            <div class="menu-card-body">
+              <h3 class="menu-card-title">Chocolate Lava Cake</h3>
+              <p class="menu-card-price">₹149</p>
+              <p class="menu-card-desc">Warm chocolate cake with a molten center, served with vanilla ice cream.</p>
+              <div class="menu-card-footer">
+                <div class="quantity-selector">
+                  <button class="quantity-btn minus">-</button>
+                  <input type="number" class="quantity-input" value="1" min="1">
+                  <button class="quantity-btn plus">+</button>
+                </div>
+                <button class="add-to-cart-btn" data-id="5" data-name="Chocolate Lava Cake" data-price="149" data-image="https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Another Pizza -->
+        <div class="food-item visible" data-categories="pizza">
+          <div class="menu-card">
+            <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Pepperoni Pizza" class="menu-card-img">
+            <div class="menu-card-body">
+              <h3 class="menu-card-title">Pepperoni Pizza</h3>
+              <p class="menu-card-price">₹349</p>
+              <p class="menu-card-desc">Classic pizza with tomato sauce, mozzarella, and spicy pepperoni.</p>
+              <div class="menu-card-footer">
+                <div class="quantity-selector">
+                  <button class="quantity-btn minus">-</button>
+                  <input type="number" class="quantity-input" value="1" min="1">
+                  <button class="quantity-btn plus">+</button>
+                </div>
+                <button class="add-to-cart-btn" data-id="6" data-name="Pepperoni Pizza" data-price="349" data-image="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-12">
+        <button class="btn-primary">View Full Menu</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="animate-fade-in" style="animation-delay: 0.1s">
+          <div class="text-4xl md:text-5xl font-bold mb-2">10K+</div>
+          <div class="text-lg">Happy Customers</div>
+        </div>
+        <div class="animate-fade-in" style="animation-delay: 0.2s">
+          <div class="text-4xl md:text-5xl font-bold mb-2">500+</div>
+          <div class="text-lg">Menu Items</div>
+        </div>
+        <div class="animate-fade-in" style="animation-delay: 0.3s">
+          <div class="text-4xl md:text-5xl font-bold mb-2">50+</div>
+          <div class="text-lg">Expert Chefs</div>
+        </div>
+        <div class="animate-fade-in" style="animation-delay: 0.4s">
+          <div class="text-4xl md:text-5xl font-bold mb-2">12</div>
+          <div class="text-lg">Cities Served</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-16 bg-dark text-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="section-title text-white">What Our Customers Say</h2>
+        <p class="section-subtitle text-gray-300">Hear from people who love our food</p>
+      </div>
+      
+      <div class="testimonial-slider">
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">"The pizza here is absolutely delicious! The crust is crispy, the toppings are fresh, and the cheese is perfect."</p>
+            <div class="testimonial-author">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John D." class="testimonial-avatar">
+              <div>
+                <h4 class="testimonial-name">John D.</h4>
+                <p class="testimonial-location">Regular Customer</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p class="testimonial-text">"The pasta carbonara was cooked to perfection. Creamy, flavorful, and just the right portion size. Highly recommended!"</p>
+            <div class="testimonial-author">
+              <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Adarsh Pal" class="testimonial-avatar">
+              <div>
+                <h4 class="testimonial-name">Adarsh Pal</h4>
+                <p class="testimonial-location">Food Blogger</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="testimonial-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">"I can't get enough of their desserts. The chocolate lava cake is a must-try. Warm, gooey, and indulgent."</p>
+            <div class="testimonial-author">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Emily R." class="testimonial-avatar">
+              <div>
+                <h4 class="testimonial-name">Emily R.</h4>
+                <p class="testimonial-location">Food Critic</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="section-title">Food Gallery</h2>
+        <p class="section-subtitle">A visual feast of our delicious creations</p>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Pizza" class="w-full h-48 object-cover transform hover:scale-110 transition-transform duration-500">
+        </div>
+        <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Burger" class="w-full h-48 object-cover transform hover:scale-110 transition-transform duration-500">
+        </div>
+        <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Pasta" class="w-full h-48 object-cover transform hover:scale-110 transition-transform duration-500">
+        </div>
+        <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Salad" class="w-full h-48 object-cover transform hover:scale-110 transition-transform duration-500">
+        </div>
+        <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Dessert" class="w-full h-48 object-cover transform hover:scale-110 transition-transform duration-500">
+        </div>
+        <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Breakfast" class="w-full h-48 object-cover transform hover:scale-110 transition-transform duration-500">
+        </div>
+        <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Brunch" class="w-full h-48 object-cover transform hover:scale-110 transition-transform duration-500">
+        </div>
+        <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Dinner" class="w-full h-48 object-cover transform hover:scale-110 transition-transform duration-500">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-16 bg-secondary">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-12 md:mb-0">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Our Restaurant" class="rounded-lg shadow-xl w-full transform hover:scale-105 transition-transform duration-500">
+        </div>
+        
+        <div class="md:w-1/2 md:pl-12">
+          <h2 class="section-title text-left">Our Story</h2>
+          <p class="text-lg mb-6">
+            FastFoody was founded in 2010 with a simple mission: to deliver delicious, high-quality food quickly without compromising on taste or quality.
+          </p>
+          <p class="text-lg mb-8">
+            Our chefs combine traditional recipes with modern techniques to create unforgettable flavors that keep our customers coming back for more.
+          </p>
+          <div class="flex space-x-4">
+            <button class="btn-primary">Learn More</button>
+            <button class="btn-secondary">Meet Our Team</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="section-title">Meet Our Chefs</h2>
+        <p class="section-subtitle">The talented people behind your delicious meals</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="team-card text-center animate-slide-up" style="animation-delay: 0.1s">
+          <div class="team-avatar mb-4 mx-auto rounded-full overflow-hidden border-4 border-primary w-40 h-40">
+            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Chef Raj" class="w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-bold mb-1">Chef Raj Patel</h3>
+          <p class="text-primary mb-4">Head Chef</p>
+          <p class="text-gray-600">With over 15 years of experience, Chef Raj brings authentic flavors to every dish.</p>
+        </div>
+        
+        <div class="team-card text-center animate-slide-up" style="animation-delay: 0.2s">
+          <div class="team-avatar mb-4 mx-auto rounded-full overflow-hidden border-4 border-primary w-40 h-40">
+            <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Chef Priya" class="w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-bold mb-1">Chef Priya Sharma</h3>
+          <p class="text-primary mb-4">Pastry Chef</p>
+          <p class="text-gray-600">Our dessert specialist who creates magical sweet experiences.</p>
+        </div>
+        
+        <div class="team-card text-center animate-slide-up" style="animation-delay: 0.3s">
+          <div class="team-avatar mb-4 mx-auto rounded-full overflow-hidden border-4 border-primary w-40 h-40">
+            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Chef Arjun" class="w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-bold mb-1">Chef Arjun Singh</h3>
+          <p class="text-primary mb-4">Pizza Master</p>
+          <p class="text-gray-600">Trained in Naples, he crafts the perfect pizza every time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="section-title">Contact Us</h2>
+        <p class="section-subtitle">We'd love to hear from you</p>
+      </div>
+      
+      <div class="flex flex-col lg:flex-row gap-12">
+        <div class="lg:w-1/2">
+          <form id="contact-form" class="space-y-6">
+            <div class="form-group">
+              <label for="name" class="form-label">Your Name</label>
+              <input type="text" id="name" name="name" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" id="email" name="email" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="message" class="form-label">Your Message</label>
+              <textarea id="message" name="message" rows="5" class="form-input" required></textarea>
+            </div>
+            
+            <div class="flex items-center">
+              <input type="checkbox" id="consent" name="consent" class="mr-2" required>
+              <label for="consent" class="text-sm">I consent to the processing of my personal data</label>
+            </div>
+            
+            <button type="submit" class="btn-secondary w-full">Send Message</button>
+          </form>
+        </div>
+        
+        <div class="lg:w-1/2">
+          <div class="bg-white/10 p-8 rounded-lg backdrop-blur-sm">
+            <h3 class="text-2xl font-bold mb-6">Get in Touch</h3>
+            
+            <div class="space-y-6">
+              <div class="flex items-start">
+                <div class="contact-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div>
+                  <h4 class="contact-info-title">Address</h4>
+                  <p class="contact-info-text">123 Food Street, Mumbai, India</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="contact-icon">
+                  <i class="fas fa-phone-alt"></i>
+                </div>
+                <div>
+                  <h4 class="contact-info-title">Phone</h4>
+                  <p class="contact-info-text">+91 7710876602</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="contact-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                  <h4 class="contact-info-title">Email</h4>
+                  <p class="contact-info-text">necessaryforus@gmail.com</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="contact-icon">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <div>
+                  <h4 class="contact-info-title">Opening Hours</h4>
+                  <p class="contact-info-text">9:00 AM - 10:00 PM, Daily</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-8">
+              <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+              <div class="flex space-x-4">
+                <a href="#" class="social-icon">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon">
+                  <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-icon">
+                  <i class="fab fa-youtube"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="h-96 w-full bg-gray-200">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.044557248361!2d72.83256031490098!3d19.05991838709811!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c8df0a854749%3A0x447d1c5a0a4a3a3d!2s123%20Food%20Street%2C%20Mumbai%2C%20Maharashtra%20400001!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="py-16 bg-dark text-white">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl md:text-4xl font-display font-bold mb-4">Subscribe to Our Newsletter</h2>
+      <p class="text-lg mb-8 max-w-2xl mx-auto">Get exclusive offers, new menu updates, and special discounts delivered to your inbox.</p>
+      
+      <form id="newsletter-form" class="max-w-md mx-auto flex">
+        <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-l-lg focus:outline-none text-dark">
+        <button type="submit" class="bg-accent text-dark font-bold px-6 py-3 rounded-r-lg hover:bg-yellow-400 transition-colors">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <span class="text-2xl font-display text-primary font-bold">FastFoody</span>
+          </div>
+          <p class="text-gray-400 mb-4">Delivering delicious food with love since 2010.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Menu</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold mb-4">Services</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Food Delivery</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Catering</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Online Ordering</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Gift Cards</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold mb-4">Contact Info</h3>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2 text-gray-400"></i>
+              <span class="text-gray-400">123 Food Street, Mumbai, India</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-phone-alt mt-1 mr-2 text-gray-400"></i>
+              <span class="text-gray-400">+91 7710876602</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-envelope mt-1 mr-2 text-gray-400"></i>
+              <span class="text-gray-400">necessaryforus@gmail.com</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+        <p>&copy; 2024 FastFoody.com. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-accent hover:text-dark">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Cart Sidebar -->
+  <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 z-50">
+    <div class="p-6 h-full flex flex-col">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold">Your Cart</h3>
+        <button id="close-cart" class="text-gray-500 hover:text-primary">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="flex-grow overflow-y-auto">
+        <div id="cart-items" class="space-y-4">
+          <!-- Cart items will be dynamically added here -->
+          <div class="text-center py-12">
+            <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500">Your cart is empty</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t pt-4">
+        <div class="flex justify-between mb-2">
+          <span>Subtotal:</span>
+          <span id="cart-subtotal" class="font-bold">₹0.00</span>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span>Delivery Fee:</span>
+          <span id="delivery-fee" class="font-bold">₹40.00</span>
+        </div>
+        <div class="flex justify-between mb-4 text-lg">
+          <span class="font-bold">Total:</span>
+          <span id="cart-total" class="font-bold text-primary">₹40.00</span>
+        </div>
+        <button class="btn-primary w-full">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Success Modal -->
+  <div id="order-success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 invisible transition-all duration-300">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 text-center transform scale-95 transition-transform duration-300">
+      <div class="text-green-500 text-6xl mb-4">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3 class="text-2xl font-bold mb-2">Order Placed Successfully!</h3>
+      <p class="mb-6">Your delicious food will be delivered soon. Thank you for choosing FastFoody!</p>
+      <button id="close-modal" class="btn-primary">Continue Shopping</button>
+    </div>
+  </div>
+
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+    
+    // Cart Functionality
+    const cartButton = document.getElementById('cart-button');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const closeCartButton = document.getElementById('close-cart');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
+    const cartSubtotal = document.getElementById('cart-subtotal');
+    const cartTotal = document.getElementById('cart-total');
+    const deliveryFee = document.getElementById('delivery-fee');
+    
+    let cart = [];
+    
+    // Toggle cart sidebar
+    cartButton.addEventListener('click', () => {
+      cartSidebar.classList.remove('translate-x-full');
+      updateCartDisplay();
+    });
+    
+    closeCartButton.addEventListener('click', () => {
+      cartSidebar.classList.add('translate-x-full');
+    });
+    
+    // Add to cart functionality
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const id = button.getAttribute('data-id');
+        const name = button.getAttribute('data-name');
+        const price = parseFloat(button.getAttribute('data-price'));
+        const image = button.getAttribute('data-image');
+        const quantity = parseInt(button.parentElement.querySelector('.quantity-input').value);
+        
+        // Check if item already in cart
+        const existingItem = cart.find(item => item.id === id);
+        
+        if (existingItem) {
+          existingItem.quantity += quantity;
+        } else {
+          cart.push({
+            id,
+            name,
+            price,
+            image,
+            quantity
+          });
+        }
+        
+        updateCartCount();
+        updateCartDisplay();
+        
+        // Show cart sidebar when adding an item
+        cartSidebar.classList.remove('translate-x-full');
+        
+        // Add shake animation to cart button
+        cartButton.classList.add('animate-shake');
+        setTimeout(() => {
+          cartButton.classList.remove('animate-shake');
+        }, 500);
+      });
+    });
+    
+    // Quantity selector functionality
+    document.querySelectorAll('.quantity-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const input = button.parentElement.querySelector('.quantity-input');
+        let value = parseInt(input.value);
+        
+        if (button.classList.contains('minus') && value > 1) {
+          input.value = value - 1;
+        } else if (button.classList.contains('plus')) {
+          input.value = value + 1;
+        }
+      });
+    });
+    
+    // Update cart count display
+    function updateCartCount() {
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = totalItems;
+    }
+    
+    // Update cart display
+    function updateCartDisplay() {
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div class="text-center py-12">
+            <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500">Your cart is empty</p>
+          </div>
+        `;
+      } else {
+        cartItemsContainer.innerHTML = '';
+        cart.forEach(item => {
+          const itemTotal = item.price * item.quantity;
+          cartItemsContainer.innerHTML += `
+            <div class="cart-item" data-id="${item.id}">
+              <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+              <div class="cart-item-details">
+                <h4 class="cart-item-title">${item.name}</h4>
+                <p class="cart-item-price">₹${item.price.toFixed(2)} × ${item.quantity} = ₹${itemTotal.toFixed(2)}</p>
+                <div class="flex mt-2">
+                  <button class="quantity-btn minus text-xs px-2 py-1" data-id="${item.id}">-</button>
+                  <span class="mx-2">${item.quantity}</span>
+                  <button class="quantity-btn plus text-xs px-2 py-1" data-id="${item.id}">+</button>
+                </div>
+              </div>
+              <button class="cart-item-remove" data-id="${item.id}">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          `;
+        });
+      }
+      
+      // Calculate subtotal
+      const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+      cartSubtotal.textContent = `₹${subtotal.toFixed(2)}`;
+      
+      // Calculate total (subtotal + delivery fee)
+      const total = subtotal + parseFloat(deliveryFee.textContent.replace('₹', ''));
+      cartTotal.textContent = `₹${total.toFixed(2)}`;
+      
+      // Add event listeners to cart item buttons
+      document.querySelectorAll('.cart-item-remove').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = button.getAttribute('data-id');
+          cart = cart.filter(item => item.id !== id);
+          updateCartCount();
+          updateCartDisplay();
+        });
+      });
+      
+      document.querySelectorAll('.cart-item .quantity-btn.minus').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = button.getAttribute('data-id');
+          const item = cart.find(item => item.id === id);
+          if (item.quantity > 1) {
+            item.quantity--;
+            updateCartCount();
+            updateCartDisplay();
+          }
+        });
+      });
+      
+      document.querySelectorAll('.cart-item .quantity-btn.plus').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = button.getAttribute('data-id');
+          const item = cart.find(item => item.id === id);
+          item.quantity++;
+          updateCartCount();
+          updateCartDisplay();
+        });
+      });
+    }
+    
+    // Checkout button
+    document.querySelector('#cart-sidebar button.btn-primary').addEventListener('click', () => {
+      if (cart.length > 0) {
+        // Show success modal
+        const modal = document.getElementById('order-success-modal');
+        modal.classList.remove('opacity-0', 'invisible');
+        modal.querySelector('.modal-content').classList.remove('scale-95');
+        
+        // Clear cart
+        cart = [];
+        updateCartCount();
+        updateCartDisplay();
+        
+        // Close cart sidebar
+        cartSidebar.classList.add('translate-x-full');
+      }
+    });
+    
+    // Close modal
+    document.getElementById('close-modal').addEventListener('click', () => {
+      const modal = document.getElementById('order-success-modal');
+      modal.classList.add('opacity-0', 'invisible');
+      modal.querySelector('.modal-content').classList.add('scale-95');
+    });
+    
+    // Back to top button
+    const backToTopButton = document.getElementById('back-to-top');
+    
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.remove('opacity-0', 'invisible');
+      } else {
+        backToTopButton.classList.add('opacity-0', 'invisible');
+      }
+    });
+    
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // Food category filtering
+    document.querySelectorAll('.food-category').forEach(category => {
+      category.addEventListener('click', () => {
+        // Update active category
+        document.querySelectorAll('.food-category').forEach(c => c.classList.remove('active'));
+        category.classList.add('active');
+        
+        const selectedCategory = category.getAttribute('data-category');
+        
+        // Filter food items
+        document.querySelectorAll('.food-item').forEach(item => {
+          const categories = item.getAttribute('data-categories');
+          
+          if (selectedCategory === 'all' || categories.includes(selectedCategory)) {
+            item.classList.remove('hidden');
+            item.classList.add('visible');
+          } else {
+            item.classList.remove('visible');
+            item.classList.add('hidden');
+          }
+        });
+      });
+    });
+    
+    // Form submissions
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for your message! We will get back to you soon.');
+      e.target.reset();
+    });
+    
+    document.getElementById('newsletter-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for subscribing to our newsletter!');
+      e.target.reset();
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
