@@ -71,7 +71,7 @@ By building this project, you’ll strengthen your understanding of:
 
 ## 🙋‍♂️ Author
 
-Created by **Adarsh Pal** 
+Created with 💖 by **Adarsh Pal** 
 
 ---
 
